@@ -28,6 +28,9 @@ public class ZombieController : MonoBehaviour {
 
 	void FixedUpdate() {
 
+		if (GetComponent<Entity> ().IsDead ())
+			return;
+
 		if (attackCoolDown > 0) {
 			attackCoolDown -= Time.fixedDeltaTime;
 			return;
@@ -47,4 +50,5 @@ public class ZombieController : MonoBehaviour {
 			zombieAnimator.Play ("Attack");
 		}
 	}
+		
 }

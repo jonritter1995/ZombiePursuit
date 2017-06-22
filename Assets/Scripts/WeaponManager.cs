@@ -22,6 +22,8 @@ public class WeaponManager : MonoBehaviour {
 	public GameObject[] bulletLocations;
 	private Transform playerTransform;
 
+	private Animator muzzleAnim;
+
 
 	// Use this for initialization
 	void Start () {
@@ -75,6 +77,9 @@ public class WeaponManager : MonoBehaviour {
 				}
 				projectiles[i].GetComponent<Rigidbody2D> ().velocity = projectiles[i].transform.up * 10;
 			}
+
+			muzzleAnim = GetComponent<Transform> ().GetChild (currentGun).GetChild (0).GetComponent<Animator> ();
+			muzzleAnim.Play ("Muzzle Flash");
 		}
 	}
 
