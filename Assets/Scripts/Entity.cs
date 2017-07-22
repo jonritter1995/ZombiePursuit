@@ -5,46 +5,36 @@ using UnityEngine;
 public class Entity : MonoBehaviour {
 
 	public int health;
-	private Animator particleAnim;
-	private Animator entityAnim;
-	bool dead;
-	float animTimer;
+	public int speed;
+	protected Animator particleAnim;
+	protected Animator entityAnim;
+	protected bool dead;
 
 	// Use this for initialization
 	void Start () {
-		particleAnim = GetComponent<Transform> ().GetChild (0).GetComponent<Animator> ();
-		entityAnim = GetComponent<Animator> ();
-		dead = false;
+		
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (dead) {
-			animTimer -= Time.deltaTime;
-			if (animTimer <= 0)
-				Destroy (gameObject);
-		}
+
 	}
 
-	public void Damage(int damage) {
+	public virtual void Damage(int damage) {
 		if (dead)
 			return;
+		
 		health -= damage;
-		particleAnim.Play ("blood");
+
 		if (health <= 0) {
 			Kill ();
 		}
 	}
 
-	public void Kill() {
-		entityAnim.Play ("Death");
+	public virtual void Kill() {
 		dead = true;
-		foreach (AnimationClip c in entityAnim.runtimeAnimatorController.animationClips) {
-			if (c.name == "Death") {
-				animTimer = c.length;
-				break;
-			}
-		}
+		GetComponent<Rigidbody2D> ().velocity = new Vector3 (0, 0, 0);
+		//entityAnim.Play ("Death");
 	}
 
 	public bool IsDead() {

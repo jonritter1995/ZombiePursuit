@@ -6,6 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerController : MonoBehaviour {
 
+	private Player player;
 	private Transform playerTransform;
 	private Rigidbody2D playerBody;
 	private Transform cameraTransform;
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		player = GetComponent<Player> ();
 		playerTransform = GetComponent<Transform> ();
 		playerBody = GetComponent<Rigidbody2D> ();
 		cameraTransform = Camera.main.GetComponent<Transform> ();
@@ -37,6 +39,14 @@ public class PlayerController : MonoBehaviour {
 		y = (CrossPlatformInputManager.GetAxis ("move_v") * maxSpeed);
 		x = (CrossPlatformInputManager.GetAxis ("move_h") * maxSpeed);
 		Vector2 move = new Vector3 (x, y);
+
+		if (GetComponent<WeaponManager> ().Reloading ()) {
+			player.GetAnimator ().Play ("reload");
+		} else if (move.x != 0 && move.y != 0 && GetComponent<WeaponManager>().Firing() == false) {
+			player.GetAnimator ().Play ("move");
+		} else if (GetComponent<WeaponManager>().Firing() == false) {
+			player.GetAnimator ().Play ("idle");
+		}
 
 		playerBody.velocity = Vector2.ClampMagnitude(move, maxSpeed);
 		cameraTransform.position = new Vector3 (playerTransform.position.x, playerTransform.position.y, -10);

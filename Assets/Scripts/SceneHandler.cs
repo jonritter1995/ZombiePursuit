@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartMenuHandler : MonoBehaviour {
+public class SceneHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -17,5 +17,9 @@ public class StartMenuHandler : MonoBehaviour {
 
 	public void StartGame() { 
 		SceneManager.LoadScene ("game");
+	}
+
+	public void ReturnToMenu() {
+		SceneManager.LoadScene ("menu");
 	}
 }

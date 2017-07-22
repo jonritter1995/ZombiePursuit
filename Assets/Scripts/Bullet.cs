@@ -19,13 +19,13 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		try {
-			other.GetComponent<Entity> ().Damage (damage);
-		}
-		catch (Exception ex) {
-			GameObject toDestroy = Instantiate (spark, GetComponent<Transform> ().position, GetComponent<Transform>().rotation);
-			Destroy (gameObject);
-		}
+		if (other.gameObject.name.ToLower ().Contains ("zombie"))
+			other.GetComponent<Zombie> ().Damage (damage);
+		else if (other.GetComponent<Transform> ().parent.gameObject.name.ToLower ().Contains ("zombie"))
+			return;
+		else if (other.gameObject != this.gameObject)
+			Instantiate (spark, GetComponent<Transform> ().position, GetComponent<Transform>().rotation);
+		
 		Destroy (gameObject);
 	}
 

@@ -17,16 +17,19 @@ public class WeaponManager : MonoBehaviour {
 	private bool firing;
 	private int cdCounter;
 	private int reloadCounter;
+	private bool reloading;
 
 	public GameObject[] bullets;
 	public GameObject[] bulletLocations;
 	private Transform playerTransform;
 
 	private Animator muzzleAnim;
+	private Player player;
 
 
 	// Use this for initialization
 	void Start () {
+		player = GetComponent<Player> ();
 		playerTransform = GetComponent<Transform> ();
 		cdCounter = 1000;
 		reloadCounter = 1000;
@@ -48,6 +51,8 @@ public class WeaponManager : MonoBehaviour {
 
 		if (reloadCounter < RELOAD_SPEEDS [currentGun]) {
 			return;
+		} else {
+			reloading = false;
 		}
 
 		// Clip empty.
@@ -80,10 +85,12 @@ public class WeaponManager : MonoBehaviour {
 
 			muzzleAnim = GetComponent<Transform> ().GetChild (currentGun).GetChild (0).GetComponent<Animator> ();
 			muzzleAnim.Play ("Muzzle Flash");
+			player.GetAnimator ().Play ("shoot", 0, 0f);
 		}
 	}
 
 	private void Reload() {
+		reloading = true;
 		reloadCounter = 0;
 		if (totalAmmo [currentGun] >= CLIP_SIZES [currentGun]) {
 			totalAmmo [currentGun] -= CLIP_SIZES [currentGun];
@@ -100,5 +107,22 @@ public class WeaponManager : MonoBehaviour {
 
 	public void PointerUp() {
 		firing = false;
+	}
+
+	public void SwitchWeapon() {
+		if (currentGun == 2)
+			currentGun = 0;
+		else
+			currentGun++;
+
+		GetComponent<Player> ().SetGunController (currentGun);
+	}
+
+	public bool Firing() {
+		return firing;
+	}
+
+	public bool Reloading() {
+		return reloading;
 	}
 }
