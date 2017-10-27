@@ -16,5 +16,9 @@ public class HealthDisplay : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.localScale = new Vector3 (p.PercentHP () * 2.4f, transform.localScale.y, transform.localScale.z);
+
+		if (p.PercentHP () <= 20) {
+			
+		}
 	}
 }
